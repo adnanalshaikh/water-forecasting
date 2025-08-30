@@ -1,0 +1,80 @@
+============================================================
+COMPREHENSIVE RUN STATISTICS
+============================================================
+
+MAPE STATISTICS:
+------------------------------------------------------------
+     Run  Count   Mean   Std Median   Q25    Q75   IQR   Min    Max Delta_Mean% Delta_Median%
+adaptive     29  7.323 4.943  6.463 5.283  7.685 2.402 3.378 31.393     +30.20%       +32.18%
+  base-0     29 10.491 4.404  9.529 7.797 11.590 3.793 6.339 29.307       0.00%         0.00%
+ fixed-1     29  9.545 4.499  8.933 6.778 10.007 3.229 5.093 29.322      +9.02%        +6.25%
+ fixed-2     29  9.008 4.548  8.519 6.137  9.373 3.236 4.138 27.453     +14.14%       +10.60%
+ fixed-3     29  7.420 4.524  6.698 5.582  8.462 2.880 3.483 29.288     +29.27%       +29.71%
+ fixed-4     29  7.615 4.651  6.730 5.646  7.693 2.047 3.383 29.495     +27.41%       +29.37%
+ fixed-5     29  7.833 5.064  6.769 5.500  7.783 2.282 3.475 31.543     +25.34%       +28.96%
+ fixed-6     29  7.846 4.867  6.930 5.560  8.339 2.779 4.009 30.884     +25.21%       +27.27%
+ fixed-7     29  8.052 4.761  6.986 6.155  8.852 2.697 3.910 30.812     +23.25%       +26.69%
+
+SUMMARY for MAPE:
+  • Best Mean Performance: adaptive (7.323)
+  • Best Median Performance: adaptive (6.463)
+  • Best Mean Improvement over base-0: 30.20%
+  • Best Median Improvement over base-0: 32.18%
+
+MASE STATISTICS:
+------------------------------------------------------------
+     Run  Count  Mean   Std Median   Q25   Q75   IQR   Min   Max Delta_Mean% Delta_Median%
+adaptive     29 0.606 0.282  0.549 0.419 0.638 0.219 0.352 1.771     +30.50%       +32.31%
+  base-0     29 0.872 0.269  0.811 0.734 0.935 0.201 0.487 1.574       0.00%         0.00%
+ fixed-1     29 0.795 0.270  0.750 0.610 0.916 0.305 0.429 1.575      +8.83%        +7.52%
+ fixed-2     29 0.753 0.286  0.719 0.570 0.862 0.292 0.346 1.587     +13.65%       +11.34%
+ fixed-3     29 0.622 0.271  0.572 0.497 0.641 0.144 0.295 1.683     +28.67%       +29.47%
+ fixed-4     29 0.637 0.287  0.576 0.455 0.662 0.207 0.286 1.711     +26.95%       +28.98%
+ fixed-5     29 0.652 0.313  0.587 0.445 0.664 0.219 0.328 1.765     +25.23%       +27.62%
+ fixed-6     29 0.651 0.277  0.610 0.460 0.686 0.226 0.372 1.706     +25.34%       +24.78%
+ fixed-7     29 0.671 0.281  0.591 0.494 0.715 0.220 0.380 1.747     +23.05%       +27.13%
+
+SUMMARY for MASE:
+  • Best Mean Performance: adaptive (0.606)
+  • Best Median Performance: adaptive (0.549)
+  • Best Mean Improvement over base-0: 30.50%
+  • Best Median Improvement over base-0: 32.31%
+
+STATISTICAL SIGNIFICANCE (vs base-0):
+--------------------------------------------------
+base-0                    | Baseline Reference
+adaptive                  | Delta: +30.2% | p-value: 0.0000 ***
+fixed-1                   | Delta:  +9.0% | p-value: 0.0147 *
+fixed-2                   | Delta: +14.1% | p-value: 0.0019 **
+fixed-3                   | Delta: +29.3% | p-value: 0.0000 ***
+fixed-4                   | Delta: +27.4% | p-value: 0.0000 ***
+fixed-5                   | Delta: +25.3% | p-value: 0.0000 ***
+fixed-6                   | Delta: +25.2% | p-value: 0.0000 ***
+fixed-7                   | Delta: +23.3% | p-value: 0.0000 ***
+
+============================================================
+LEGEND:
+  Delta%: Percentage improvement over baseline (positive = better for MAPE/MASE)
+  Significance: *** p<0.001, ** p<0.01, * p<0.05
+  IQR: Interquartile Range (Q75 - Q25)
+============================================================
+================================================================================
+EXPERIMENTAL RUNS SUMMARY
+================================================================================
+Analysis Date: 2025-08-29 17:22:23
+
+RUNS ANALYZED:
+  • base-0: 29 areas | MAPE: 10.5% | MASE: 0.87
+  • adaptive: 29 areas | MAPE: 7.3% | MASE: 0.61
+  • fixed-1: 29 areas | MAPE: 9.5% | MASE: 0.80
+  • fixed-2: 29 areas | MAPE: 9.0% | MASE: 0.75
+  • fixed-3: 29 areas | MAPE: 7.4% | MASE: 0.62
+  • fixed-4: 29 areas | MAPE: 7.6% | MASE: 0.64
+  • fixed-5: 29 areas | MAPE: 7.8% | MASE: 0.65
+  • fixed-6: 29 areas | MAPE: 7.8% | MASE: 0.65
+  • fixed-7: 29 areas | MAPE: 8.1% | MASE: 0.67
+
+FINDINGS:
+  • Best performing configuration: adaptive (MAPE: 7.3%)
+  • Total experiments conducted: 261
+  • Configuration variations tested: 9
