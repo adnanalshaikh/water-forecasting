@@ -17,11 +17,10 @@ We developed an automated forecasting framework to predict monthly water consump
 **Figure:** Automated water demand forecasting workflow. Raw consumption, weather, and holiday data are preprocessed, analyzed, and transformed into area-specific Prophet models with external regressors and hyperparameter optimization. The trained models are evaluated against multiple error metrics to ensure robust, scalable forecasting across heterogeneous urban areas.
 
 ### **Key Constraints**
-- **Viral Orders**: 
-- **Data Filtering**:
+A key challenge in this study is the short and heterogeneous time series (60 months per area, with highly diverse patterns across residential, industrial, refugee camps and commercial zones). This constraint requires area-specific regressors and adaptive hyperparameter tuning to achieve reliable forecasts, since a one-size-fits-all model would fail to capture these variations. 
 
 ### **Significance**
-
+This framework delivers scalable water demand forecasting for Palestine’s 550+ service areas, validated in Nablus with 93%+ accuracy (MAPE < 10%). It adapts to diverse patterns across residential, industrial, and refugee zones, helping utilities move from reactive crisis response to proactive planning. Core innovations include automated feature selection and a forecasting difficulty score that optimize resources for national-scale deployment.
 
 
 
