@@ -1,4 +1,4 @@
-from dataloader import *
+from data_loader import *
 from scipy.stats import zscore
 import numpy as np
 import pandas as pd

@@ -6,7 +6,7 @@ from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.inspection import permutation_importance
 from sklearn.linear_model import Ridge
-from dataloader import get_humidity_data, get_rainfall_data, get_temp_data
+from data_loader import get_humidity_data, get_rainfall_data, get_temp_data
 
 def add_fridays_per_month_reg(df, which_regressors=None):
     # Make a copy    

@@ -1,44 +1,56 @@
-# run several experiments 
+# configuration file for tuning, optimization, and execution parameters
+
 config_baseline = {
     'comment' : "",
-    'area_id': (1, 29),  # id or [id1, id2, ...], (from_id, to_id)
+    'area_id': (1, 29),  # tuple range or list of ids or id
     
+    # splits (months)
     'test_size': 12, 
     'valid_size': 10,
     
-    'impute_thresh': None, 
-    'impute_method': 'linear', 
+    # missing/outliers
+    'impute_thresh': None,          # if None, always impute using method
+    'impute_method': 'linear',      
     'outlier_detection': 'iqr', 
     'outlier_treatment': 'interpolate', 
-    'auto_outlier_methods': False,    # select best outlier detection method automatically 
+    'auto_outlier_methods': False, # select best outlier detection method automatically 
     
-    'n_trials': 80, 
-    'optimize': True, 
+    # # Prophet/Optuna search space
+    'optimize': True,       
+    'n_trials': 300,
+    'n_changepoints' : [5, 20],   # [min,max] (interpreted by code)
     'changepoint_prior_scale': [0.001, 0.6], 
-    'seasonality_prior_scale': [0.01, 10], 
+    'seasonality_prior_scale': [0.01, 5], 
     'seasonality_mode': ['additive', 'multiplicative'], 
-    'n_changepoints' : [15, 15],
-    'fourier_order': [1, 10], 
+    'fourier_order': [1, 8],   # Higher for complex seasonality
+    'early_stopping_patience' : 50,
+    
+    # cross validation (unused)
+    'cv_folds': 0,             # not used 
+    'cv_repeats': 0,           # Number of repetitions
+    
+    # execution
+    'n_jobs' : -1,              # use single process, -1 for all cores
+    'data_filepath': "../data/combined_water_data.csv", 
+    
+    # logging results 
+    'run_dir' : 'test_run',
+    'log_experiment_results': True,        
+    "plot": {
+        "show": False,        # whether to display on screen
+        "save": True,         # whether to save to file
+        "mode": "low",       # {"high","low"} resolution
+        "formats": ["png"],   # list of formats, e.g. ["png","pdf","svg"]
+        "dpi": 150            # dpi for saved figures when mode="high"
+        },
+    
+    # regressor analysis 
     'add_regressors': True, 
-    'top_regressors': 3, 
-    'cv_folds': 0,
-    'early_stopping_patience' : 20,
-    'n_jobs' : 0, 
-    'cv_repeats': 2,           # Number of repetitions
-    'n_bootstrap': 10,         # For bootstrap alternative
-    'random_state': 42,        # For reproducibility  
-    
-    'log_experiment_results': True, 
-    'log_filepath': 'junk.csv',
-    'plot_forecast': False, 
-    #'save_plot': True, 
-    'save_plot_mode' : 'low', #'high', 'low', 'off'
-    
-    'data_filepath': '../data/combined_water_data.csv', 
-    
-    'run_dir' : 'junk',
+    'top_regressors': 3,         
+
+    # or tune for k regressors 
     'optimize_regressor_selection': True,  # Enable k optimization
-    'min_regressors': 2,  # Minimum k value
+    'min_regressors': 1,  # Minimum k value
     'max_regressors': 8,  # Maximum k value
     
     'regressors': {
@@ -66,10 +78,10 @@ config_baseline = {
         'multi_year_cycle_regressor': False, 
         'cumulative_rainfall_regressor': False, 
         'temp_trend_interaction_regressor': False, 
-        'y_ma3_regressor': True, 
+        'y_ma3_regressor': False,  #
         'y_ma6_regressor': False, 
         'y_ma12_regressor': False, 
-        'y_ewma3_regressor': True, 
+        'y_ewma3_regressor': False, #
         'y_ewma6_regressor': False, 
         'y_std3_regressor': False, 
         'y_std6_regressor': False, 
@@ -78,30 +90,17 @@ config_baseline = {
     }
 
 # 1, 20, 16, 22, 26
+config = config_baseline.copy()
+config.update({
+    'area_id': [1, 15, 22, 26], #3, 7, 14, 20] ,  #[16, 22, 26], 
+    'run_dir' : 'test_run5',
 
-config_baseline.update({
-    'area_id': (1, 29), #3, 7, 14, 20] ,  #[16, 22, 26], 
-    'run_dir' : 'run1',
-    'n_trials': 300,
-    'top_regressors':3,
-    'n_jobs' : -1, 
-    'n_changepoints' : [5, 20],
-    'changepoint_prior_scale': [0.001, 0.6],
-    'seasonality_prior_scale': [0.01, 5],
-    'fourier_order': [1, 10],  # Higher for complex seasonality
-    'early_stopping_patience' : 60,
-
+    'add_regressors': True, 
     'optimize_regressor_selection': True,  # Enable k optimization
     'min_regressors': 1,  # Minimum k value
     'max_regressors': 6,  # Maximum k value    
-    'add_regressors': True, 
-    'save_plot': True,
-
 })
 
-config = config_baseline.copy()
 
-if __name__ == '__main__':
-    #from prophet_forecasting_reg import generate_multiple_areas
-    #generate_multiple_areas()
-    print()
+
+
