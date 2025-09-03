@@ -1,6 +1,7 @@
-# Hierarchical Classification of Viral DNA Sequences Using a CNN-LSTM Framework
+# Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management
 
 This repository contains the code accompanying the paper: *"Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management"* by **Adnan Salman** and **Yamama Shaka’a**.
+
 
 ## Overview
 This repository implements the methodology described in the paper to demonstrate the feasibility and results of the 
@@ -9,11 +10,11 @@ Parameters are tuned for each service area based on its specific characteristics
 of potential factors for each area.
 
 ### **Methodology**
-We present an automated forecasting framework using the Prophet algorithm to predict monthly water demand 
-across 29 diverse service areas in Nablus. The pipeline cleans and analyzes consumption data, measures 
-forecasting difficulty, and selects the most relevant external factors (calendar, weather, seasonal, structural) for each area.
- An ensemble feature-ranking approach ensures only the most influential regressors are used, enabling scalable, accurate, 
- and reliable forecasts for real-world deployment.
+We developed an automated forecasting framework to predict monthly water consumption across 29 heterogeneous urban areas in Nablus (2019–2023) using the Prophet algorithm with automatic hyperparameter optimization via Optuna. The pipeline begins with data preprocessing (imputation of missing values, outlier detection, validation) and exploratory analysis (time-series decomposition, seasonality, predictability, and difficulty classification). Area-specific external regressors, including weather variables, holiday indicators, seasonal Fourier terms, and structural time components, are ranked and selected using ensemble importance scoring. For each area, Prophet models are tuned with Bayesian optimization to capture trend, seasonality, and uncertainty while ensuring scalability and adaptability to diverse demand patterns. Models are trained on 48 months of data and tested on the final 12 months, with walk-forward validation used during tuning. Performance is evaluated using MAE, RMSE, MAPE, and MASE against naive and seasonal baselines, enabling robust, area-specific forecasting for real-world water management.
+
+### **Architecture**
+![Automated Water Demand Forecasting Workflow](https://github.com/adnanalshaikh/water-forecasting/blob/main/doc/Figures/archit-prophet1.png) 
+**Figure:** Automated water demand forecasting workflow. Raw consumption, weather, and holiday data are preprocessed, analyzed, and transformed into area-specific Prophet models with external regressors and hyperparameter optimization. The trained models are evaluated against multiple error metrics to ensure robust, scalable forecasting across heterogeneous urban areas.
 
 ### **Key Constraints**
 - **Viral Orders**: 
@@ -22,8 +23,7 @@ forecasting difficulty, and selects the most relevant external factors (calendar
 ### **Significance**
 
 
-### **Architecture**
-![Architecture Diagram](https://github.com/adnanalshaikh/water-forecasting/blob/main/doc/Figures/archit-prophet1.png)
+
 
 ---
 
@@ -74,3 +74,4 @@ Salman, A., & Khuffash, N. (2024). Hierarchical Classification of Viral DNA Sequ
 - **Virus Metadata File (VMR_MSL39_v1.xlsx)**:
   - The metadata file used in this project is downloaded from the [ICTV Virus Metadata Resource](https://ictv.global/vmr).
   - Visit the [ICTV VMR Page](https://ictv.global/vmr) for more details and updates.
+
