@@ -254,8 +254,8 @@ def generate_performance_plot(df_path, run_name, output_dir='../results/', save_
 
 if __name__ == "__main__":
     generate_performance_plot(
-        df_path='../results/run1.csv',
-        run_name='run1',
+        df_path='../results/exp2_adaptive_reg.csv',
+        run_name='exp2_adaptive_reg',
         output_dir='../results/'
     )
 

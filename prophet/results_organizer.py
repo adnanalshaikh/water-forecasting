@@ -5,6 +5,10 @@ import seaborn as sns
 from datetime import datetime
 import os
 from scipy import stats
+from pathlib import Path
+
+RESULTS_DIR = Path(__file__).parent.parent / 'results'
+RESULTS_DIR.mkdir(exist_ok=True, parents=True)
 
 class ResultsOrganizer:
     """
@@ -1283,7 +1287,7 @@ class ResultsOrganizer:
         print(f"Best area: {df.loc[df['mase'].idxmin(), 'area_id']} (MASE = {df['mase'].min():.3f})")
         print(f"Worst area: {df.loc[df['mase'].idxmax(), 'area_id']} (MASE = {df['mase'].max():.3f})")
 
-def analyze_all_results(log_filepath='experiment_log.csv', output_dir='final_results'):
+def analyze_all_results(log_filepath='experiment_log.csv', output_dir='/results/explor'):
     """
     One-click comprehensive analysis of all results
     
@@ -1588,18 +1592,21 @@ def quick_summary(csv_path):
 
 if __name__ == "__main__":
 
+    explor_dir = RESULTS_DIR / 'explore'
+    explor_dir.mkdir(exist_ok=True, parents=True)
+
     # Example usage:
-    df = pd.read_csv('../results/test_run4.csv')
+    df = pd.read_csv('../results/exp2_adaptive_reg.csv')
     xx = summarize_experiment(df, 'Baseline Run')
-    analyze_all_results('../results/test_run4.csv')
+    analyze_all_results('../results/exp2_adaptive_reg.csv', output_dir = explor_dir)
     
     # summary 
-    summary = quick_results_summary('../results/test_run4.csv')
+    summary = quick_results_summary('../results/exp2_adaptive_reg.csv')
     
     # Compare two runs
-    df1 = pd.read_csv('../results/test_run4.csv')
-    df2 = pd.read_csv('../results/exp2_adaptive_reg.csv')
-    compare_runs(df1, df2, 'run1', 'exp2')
+    df1 = pd.read_csv('../results/exp2_adaptive_reg.csv')
+    df2 = pd.read_csv('../results/run1.csv')
+    compare_runs(df1, df2, 'exp2', 'run1')
 
     x = calculate_robust_metrics(df)
     y = calculate_success_metrics(df)

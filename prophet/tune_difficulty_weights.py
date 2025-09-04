@@ -313,9 +313,9 @@ def fitting_curve(comprehensive_stats, performance_df, optimal_weights,
     #            fontweight='bold')
     
     plt.tight_layout()
-    
+
     if save_path:
-        output_path = RESULTS_DIR / save_path
+        output_path = save_path / 'r2_weighted_fitting.png'
         plt.savefig(output_path, bbox_inches='tight', dpi=dpi, facecolor='white')
         plt.close()
         print(f"Figure saved to: {output_path}")
@@ -1219,8 +1219,16 @@ def multicollinearity_diagnostic(comprehensive_stats, performance_df):
 
     
 if __name__ == '__main__':
+    
+    # Analyze the optimized results
+    run = 'exp2_adaptive_reg'
+    input_path = RESULTS_DIR / f'{run}.csv'
+    
+    save_dir = RESULTS_DIR / f'{run}_figures'
+    save_dir.mkdir(exist_ok=True, parents=True)
+    
     comprehensive_stats = create_comprehensive_eda_table() 
-    performance_df = pd.read_csv ('../results/exp2_adaptive_reg.csv')
+    performance_df = pd.read_csv (input_path)
        
     # Find R²-weighted optimal weights
     regression_results = optimal_weights_r2_weighted(comprehensive_stats, performance_df)
@@ -1230,7 +1238,7 @@ if __name__ == '__main__':
                                                                            regression_results)    
     # Create fitting curve with equation
     fig1 = fitting_curve(comprehensive_stats, performance_df, optimal_weights, 
-                                            save_path='r2_weighted_fitting.png')
+                                            save_path=save_dir)
 
 
     methods_results, perf_results = compare_threshold_methods( comprehensive_stats, performance_df, 

@@ -565,7 +565,7 @@ def run_experimental_analysis(run_configs):
     analyzer.create_boxplots()
     analyzer.generate_experimental_summary()
     
-    stat_output_path = RESULTS_PATH / "all_runs_statistics.txt"
+    stat_output_path = RESULTS_PATH / "runs_statistics.txt"
     with open(stat_output_path, "w") as f:
         analyzer.print_all_run_stats(baseline_run='base-0', out = f)
         analyzer.generate_experimental_summary(out=f)

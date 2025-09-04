@@ -93,7 +93,7 @@ config_baseline = {
 config = config_baseline.copy()
 config.update({
     'area_id': [1, 15, 22, 26], #3, 7, 14, 20] ,  #[16, 22, 26], 
-    'run_dir' : 'test_run5',
+    'run_dir' : 'run2',
 
     'add_regressors': True, 
     'optimize_regressor_selection': True,  # Enable k optimization

@@ -47,6 +47,7 @@ cd water-forecasting
 ```bash
 pip install -r requirements.txt
 ```
+---
 
 ## Directory Structure
 ```bash
@@ -60,6 +61,8 @@ water-forecasting/
 │   ├── top_regressors_analysis.py  # Generates regressor ranking plots
 │   ├── tune_difficulty_weights.py  # Produces difficulty-weight fitting figure
 │   ├── results_final.py            # Produces final forecasting performance plots
+│   ├── timing.py                   # Produces execution time statistics
+│   ├── results_organizer.py        # To compare results between different runs 
 ├── data/
 │   ├── combined_water_data.csv     # 6 years of monthly water consumption (2018–2023)
 ├── results/
@@ -69,6 +72,17 @@ water-forecasting/
 ├── requirements.txt                # Project dependencies
 └── README.md                       # Documentation
 ```
+
+## Reproducibility Notes (For Reviewers & Editors)  
+
+The following scripts reproduce the main figures and tables in the paper:  
+
+- **exploratory_analysis.py** → Figures 2–4 (variance decomposition, seasonality distribution, autocorrelation/stationarity)  
+- **tune_difficulty_weights.py** → Figure 5 (difficulty score fitting)  
+- **experimental_analysis.py** → Figure 6 + Table 2 (config performance comparison)  
+- **top_regressors_analysis.py** → Figure 7 (regressor importance ranking)  
+- **results_final.py** → Figure 8 (forecasting performance)  
+- **prophet_forecasting.py** → Figures 9–10 (forecasting outputs)  
 
 ## Citation  
 If you use this code or methodology, please cite:  
