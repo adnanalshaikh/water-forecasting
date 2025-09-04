@@ -42,6 +42,7 @@ This framework delivers **scalable water demand forecasting** for Palestine’s 
 ```bash
 git clone https://github.com/adnanalshaikh/water-forecasting.git
 cd water-forecasting
+```
 
 ## **Directory Structure**
 
@@ -75,7 +76,6 @@ If you use this code or methodology, please cite:
 
 Salman, A., & Shaka’a, Y. (2025). *Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management*.  
 
----
 
 ## Resources  
 - [Prophet Documentation](https://facebook.github.io/prophet/docs/quick_start.html)  
