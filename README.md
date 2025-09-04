@@ -43,9 +43,13 @@ This framework delivers **scalable water demand forecasting** for Palestine’s 
 git clone https://github.com/adnanalshaikh/water-forecasting.git
 cd water-forecasting
 ```
+### **2. Install the required dependency**
+```bash
+pip install -r requirements.txt
+```
 
-## **Directory Structure**
-
+## Directory Structure
+```bash
 water-forecasting/
 ├── prophet/                    
 │   ├── data_loader.py              # Load and impute area time-series
@@ -64,12 +68,7 @@ water-forecasting/
 │   ├── {run_name}_figures/         # Forecasting and run-related figures
 ├── requirements.txt                # Project dependencies
 └── README.md                       # Documentation
-
-## **Citation**
-<!--
-If you use this code or methodology in your work, please cite the following paper:
-Salman, A., & Shakaa, Y. (2025). Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management.
--->
+```
 
 ## Citation  
 If you use this code or methodology, please cite:  
