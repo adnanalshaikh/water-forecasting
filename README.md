@@ -43,4 +43,41 @@ This framework delivers **scalable water demand forecasting** for Palestine’s 
 git clone https://github.com/adnanalshaikh/water-forecasting.git
 cd water-forecasting
 
+## **Directory Structure**
 
+water-forecasting/
+├── prophet/                    
+│   ├── data_loader.py              # Load and impute area time-series
+│   ├── exploratory_analysis.py     # Generates EDA figures (variance, seasonality, autocorrelation)
+│   ├── config.py                   # Configuration dictionary for model and execution parameters
+│   ├── prophet_forecasting.py      # Main forecasting module (outputs results .csv + figures)
+│   ├── experimental_analysis.py    # Produces comparison figure + statistics table
+│   ├── top_regressors_analysis.py  # Generates regressor ranking plots
+│   ├── tune_difficulty_weights.py  # Produces difficulty-weight fitting figure
+│   ├── results_final.py            # Produces final forecasting performance plots
+├── data/
+│   ├── combined_water_data.csv     # 6 years of monthly water consumption (2018–2023)
+├── results/
+│   ├── {run_name}.csv              # Results file (MAPE, MASE for each area)
+│   ├── eda/                        # Exploratory data analysis outputs
+│   ├── {run_name}_figures/         # Forecasting and run-related figures
+├── requirements.txt                # Project dependencies
+└── README.md                       # Documentation
+
+## **Citation**
+<!--
+If you use this code or methodology in your work, please cite the following paper:
+Salman, A., & Shakaa, Y. (2025). Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management.
+-->
+
+## Citation  
+If you use this code or methodology, please cite:  
+
+Salman, A., & Shaka’a, Y. (2025). *Automated Water Demand Forecasting for National-Scale Deployment: A Prophet-Based Framework for Palestinian Municipal Water Management*.  
+
+---
+
+## Resources  
+- [Prophet Documentation](https://facebook.github.io/prophet/docs/quick_start.html)  
+- [Optuna Documentation](https://optuna.org/)  
+- [Time Series Forecasting Basics](https://otexts.com/fpp3/)  
