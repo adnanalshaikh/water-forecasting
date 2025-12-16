@@ -21,7 +21,7 @@ We developed an automated forecasting framework to predict monthly water consump
 ---
 
 ## Architecture  
-![Automated Water Demand Forecasting Workflow](https://github.com/adnanalshaikh/water-forecasting/blob/main/doc/Figures/archit-prophet1.png)  
+![Automated Water Demand Forecasting Workflow](https://github.com/adnanalshaikh/water-forecasting/blob/main/doc/archit-prophet1.png)  
 **Figure:** Automated water demand forecasting workflow. Raw consumption, weather, and holiday data are preprocessed, analyzed, and transformed into area-specific Prophet models with external regressors and hyperparameter optimization. The trained models are evaluated against multiple error metrics to ensure robust, scalable forecasting across heterogeneous urban areas.  
 
 ---
