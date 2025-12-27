@@ -49,25 +49,52 @@ pip install -r requirements.txt
 ```
 ---
 
-## Directory Structure
+## Quick Start
+
+### Option 1: Fast Analysis (few minutes, using pre-run results)
+```bash
+# Generate all figures using pre-computed forecasts
+python main.py --skip-forecasting
+```
+
+### Option 2: Full Reproduction (About an hours, regenerate everything)
+```bash
+# Regenerate all forecasts and analyses from scratch
+python main.py
+```
+---
+
+## Pre-run Results
+
+The `prerun_results/` folder contains forecasting results used in the published paper:
+- `exp_0.csv` - Baseline Prophet (no regressors)
+- `exp_1.csv` through `exp_7.csv` - Fixed k regressors
+- `exp_adaptive.csv` - Adaptive regressor selection (main results)
+
+These allow you to reproduce all figures and analyses without re-running the time-consuming forecasting steps.
+
+## Repository Structure
 ```bash
 water-forecasting/
 ├── prophet/                    
-│   ├── data_loader.py              # Load and impute area time-series
-│   ├── exploratory_analysis.py     # Generates EDA figures (variance, seasonality, autocorrelation)
-│   ├── config.py                   # Configuration dictionary for model and execution parameters
-│   ├── prophet_forecasting.py      # Main forecasting module (outputs results .csv + figures)
-│   ├── experimental_analysis.py    # Produces comparison figure + statistics table
-│   ├── top_regressors_analysis.py  # Generates regressor ranking plots
-│   ├── tune_difficulty_weights.py  # Produces difficulty-weight fitting figure
-│   ├── results_final.py            # Produces final forecasting performance plots
-│   ├── timing.py                   # Produces execution time statistics
-│   ├── results_organizer.py        # To compare results between different runs 
+│   ├── main.py                     # Main script
+|   |── data_loader.py              # Load and impute area time-series 
+│   ├── exploratory_analysis.py     # Figure 2, 3, 4: Generates EDA figures (variance, seasonality, autocorrelation) 
+│   ├── config.py                   # Configuration dictionary for model and execution parameters 
+│   ├── prophet_forecasting.py      # Figure 9, 10: Main forecasting module (outputs results .csv + figures) 
+│   ├── performance_comparison.py   # Figure 6: Produces comparison figure + statistics table
+│   ├── top_regressors_analysis.py  # Figure 7: Generates regressor ranking plots 
+│   ├── difficulty_analysis.py      # Figure 5: Produces difficulty-weight fitting figure  
+│   ├── regressors.py               # Regressor selection code 
+│   ├── timing.py                   # Produces execution time statistics 
+│   ├── adaptive_results_summary.py # Figure 8: performance results  
+│   ├── outliers_selection.py       # Use for experimentation - not used now  
 ├── data/
 │   ├── combined_water_data.csv     # 6 years of monthly water consumption (2018–2023)
 ├── results/
 │   ├── {run_name}.csv              # Results file (MAPE, MASE for each area)
 │   ├── eda/                        # Exploratory data analysis outputs
+│   ├── config_perf_comp.png        # Comparison results  Figure 6
 │   ├── {run_name}_figures/         # Forecasting and run-related figures
 ├── requirements.txt                # Project dependencies
 └── README.md                       # Documentation
@@ -78,10 +105,10 @@ water-forecasting/
 The following scripts reproduce the main figures and tables in the paper:  
 
 - **exploratory_analysis.py** → Figures 2–4 (variance decomposition, seasonality distribution, autocorrelation/stationarity)  
-- **tune_difficulty_weights.py** → Figure 5 (difficulty score fitting)  
-- **experimental_analysis.py** → Figure 6 + Table 2 (config performance comparison)  
+- **difficulty_analysis.py** → Figure 5 (difficulty score fitting)  
+- **performance_comparison.py** → Figure 6 + Table 2 (config performance comparison)  
 - **top_regressors_analysis.py** → Figure 7 (regressor importance ranking)  
-- **results_final.py** → Figure 8 (forecasting performance)  
+- **adaptive_results_summary.py** → Figure 8 (forecasting performance)  
 - **prophet_forecasting.py** → Figures 9–10 (forecasting outputs)  
 
 ## Citation  
