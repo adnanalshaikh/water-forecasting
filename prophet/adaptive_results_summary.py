@@ -252,10 +252,52 @@ def generate_performance_plot(df_path, run_name, output_dir='../results/', save_
     
     return fig
 
-if __name__ == "__main__":
+def generate_performance_summary(run_name='run_adaptive', results_dir='../results/', output_dir='../figures/'):
+    """
+    Generate performance summary figure for a given run.
+    
+    Creates scatter plots and distributions for MASE, Seasonal MASE, and MAPE.
+    
+    Args:
+        run_name: Name of the run (e.g., 'run_adaptive', 'run_3')
+        results_dir: Directory containing the CSV results file
+        output_dir: Directory to save the output figure
+    
+    Input file:
+        {results_dir}/{run_name}.csv
+    
+    Output:
+        {output_dir}/performance_summary_{run_name}.png
+        Printed summary statistics
+    """
+    results_path = Path(results_dir)
+    output_path = Path(output_dir)
+    df_path = results_path / f'{run_name}.csv'
+    
+    # Check that input file exists
+    if not df_path.exists():
+        raise FileNotFoundError(
+            f"Missing required input file: {df_path}\n"
+            f"Available files in {results_path}:\n" +
+            "\n".join(f"  - {f.name}" for f in results_path.glob('*.csv'))
+        )
+    
+    print(f"  Input: {df_path}")
+    print(f"  Output: {output_path}/performance_summary_{run_name}.png")
+    
+    # Generate the summary plot
     generate_performance_plot(
-        df_path='../results/exp2_adaptive_reg.csv',
-        run_name='exp2_adaptive_reg',
-        output_dir='../results/'
+        df_path=str(df_path),
+        run_name=run_name,
+        output_dir=str(output_path)
     )
+    
+    return df_path
+
+
+if __name__ == "__main__":
+    # For standalone testing
+    print("Generating performance summary for adaptive run...")
+    generate_performance_summary(run_name='run_adaptive')
+
 

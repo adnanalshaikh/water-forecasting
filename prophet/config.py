@@ -23,7 +23,7 @@ config_baseline = {
     'seasonality_prior_scale': [0.01, 5], 
     'seasonality_mode': ['additive', 'multiplicative'], 
     'fourier_order': [1, 8],   # Higher for complex seasonality
-    'early_stopping_patience' : 50,
+    'early_stopping_patience' : 40,
     
     # cross validation (unused)
     'cv_folds': 0,             # not used 
@@ -89,17 +89,7 @@ config_baseline = {
         }
     }
 
-# 1, 20, 16, 22, 26
-config = config_baseline.copy()
-config.update({
-    'area_id': [1, 15, 22, 26], #3, 7, 14, 20] ,  #[16, 22, 26], 
-    'run_dir' : 'run2',
 
-    'add_regressors': True, 
-    'optimize_regressor_selection': True,  # Enable k optimization
-    'min_regressors': 1,  # Minimum k value
-    'max_regressors': 6,  # Maximum k value    
-})
 
 
 

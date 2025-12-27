@@ -589,6 +589,56 @@ def experimental_analysis():
     
     return run_experimental_analysis(run_configs)
 
+def generate_performance_comparison():
+    """
+    Generate Figure 6: Performance comparison across Prophet configurations.
+    
+    Analyzes results from all runs (k=0 through adaptive) and produces:
+    - Left panel: MAPE distribution boxplots
+    - Right panel: MASE distribution boxplots
+    
+    Input files (must exist from Steps 1-2):
+    - results/run_0.csv: Baseline (no regressors)
+    - results/run_1.csv through run_6.csv: Fixed k regressors
+    - results/run_adaptive.csv: Adaptive selection
+    
+    Output:
+    - figures/figure6_performance_comparison.png
+    """
+    
+    run_configs = [
+        ('base-0', RESULTS_PATH / 'run_0.csv'),           # k=0: No regressors
+        ('fixed-1', RESULTS_PATH / 'run_1.csv'),          # k=1: Exactly 1 regressor
+        ('fixed-2', RESULTS_PATH / 'run_2.csv'),          # k=2: Exactly 2 regressors
+        ('fixed-3', RESULTS_PATH / 'run_3.csv'),          # k=3: Exactly 3 regressors
+        ('fixed-4', RESULTS_PATH / 'run_4.csv'),          # k=4: Exactly 4 regressors
+        ('fixed-5', RESULTS_PATH / 'run_5.csv'),          # k=5: Exactly 5 regressors
+        ('fixed-6', RESULTS_PATH / 'run_6.csv'),          # k=6: Exactly 6 regressors
+        ('fixed-7', RESULTS_PATH / 'run_7.csv'),          # k=6: Exactly 7 regressors
+        ('adaptive', RESULTS_PATH / 'run_adaptive.csv'),  # Adaptive selection (1-7)
+    ]
+    
+    # Check that all input files exist
+    missing_files = [path for _, path in run_configs if not path.exists()]
+    if missing_files:
+        raise FileNotFoundError(
+            f"Missing required input files:\n" + 
+            "\n".join(f"  - {f}" for f in missing_files) +
+            "\n\nPlease run Steps 1 and 2 first to generate forecast results."
+        )
+    
+    print("\n" + "="*70)
+    print("Generating Figure 6: Performance comparison")
+    print("="*70)
+    print(f"  Input: {len(run_configs)} configuration files")
+    print(f"  Output: figures/figure6_performance_comparison.png")
+    
+    # Generate the comparison figure
+    result = run_experimental_analysis(run_configs)
+    
+    print("Figure 6 generated successfully")
+    return result
+
 if __name__ == "__main__":
     print_options()
     x = experimental_analysis()

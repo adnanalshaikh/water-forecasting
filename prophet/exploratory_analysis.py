@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - NO windows!
+
 import matplotlib.pyplot as plt
+
 import seaborn as sns
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -314,17 +318,6 @@ def create_predictability_ranking_table(comprehensive_stats):
     
     return ranking_df
 
-def whether_pred ():
-    which_regressors = { 'temperature_regressor': True, 
-                         'humidity_regressor': True, 
-                         'rainfall_regressor': True }
-
-    filepath='../data/combined_water_data.csv'
-    df, missing_count = load_time_series(filepath, 4)
-    if df is None : return None, missing_count
-    df, outlier_info = preprocess_with_outliers(df, config)
-    df = add_regressors(df, which_regressors, mode='forecast')
-
 def decomposition_analysis():
     #############################################################################
     ################ New run 8/7/2025  ##########################################
@@ -421,10 +414,7 @@ def decomposition_analysis():
     output_path = output_dir / "variance_decomposition.png"  # Construct full path
     plt.savefig(output_path, bbox_inches='tight', dpi=600)
     plt.close()
-    print(f"Figure saved to: {output_path}")
-    
-    plt.show()
-    
+    print(f"Figure saved to: {output_path}")    
     return comprehensive_stats
 
 def seasonal_characteristics_dist(comprehensive_stats):
@@ -538,52 +528,6 @@ def seasonal_characteristics_dist(comprehensive_stats):
     print(f"Figure saved to: {output_path}")
     return seasonal_stats
 
-def stationary_and_autocorrelation_vis():
-    # Create stationarity and autocorrelation visualizations
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
-    
-    # 1. Stationarity distribution (pie chart)
-    stationary_counts = [stationary_count, non_stationary_count]
-    labels = ['Stationary', 'Non-Stationary']
-    ax1.pie(stationary_counts, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax1.set_title('Distribution of Stationarity Test Results')
-    
-    # 2. Autocorrelation distribution (histogram)
-    ax2.hist(stationarity_stats['lag1_autocorr'], bins=10, alpha=0.7, edgecolor='black')
-    ax2.set_xlabel('Lag-1 Autocorrelation')
-    ax2.set_ylabel('Frequency')
-    ax2.set_title('Distribution of Lag-1 Autocorrelation')
-    ax2.axvline(stationarity_stats['lag1_autocorr'].mean(), color='red', linestyle='--', 
-               label=f'Mean: {stationarity_stats["lag1_autocorr"].mean():.3f}')
-    ax2.legend()
-    
-    # 3. ADF test p-values
-    ax3.scatter(range(len(stationarity_stats)), stationarity_stats['adf_pvalue'], alpha=0.7)
-    ax3.axhline(y=0.05, color='red', linestyle='--', label='Significance Threshold (0.05)')
-    ax3.set_xlabel('Area ID')
-    ax3.set_ylabel('ADF Test P-value')
-    ax3.set_title('ADF Test P-values by Area')
-    ax3.legend()
-    ax3.set_yscale('log')
-    
-    # 4. Stationarity vs Autocorrelation
-    stationary_mask = stationarity_stats['is_stationary']
-    ax4.scatter(stationarity_stats.loc[stationary_mask, 'lag1_autocorr'], 
-               stationarity_stats.loc[stationary_mask, 'adf_pvalue'], 
-               alpha=0.7, label='Stationary', s=60)
-    ax4.scatter(stationarity_stats.loc[~stationary_mask, 'lag1_autocorr'], 
-               stationarity_stats.loc[~stationary_mask, 'adf_pvalue'], 
-               alpha=0.7, label='Non-Stationary', s=60)
-    ax4.set_xlabel('Lag-1 Autocorrelation')
-    ax4.set_ylabel('ADF P-value')
-    ax4.set_title('Stationarity vs Autocorrelation')
-    ax4.axhline(y=0.05, color='red', linestyle='--', alpha=0.5)
-    ax4.set_yscale('log')
-    ax4.legend()
-    
-    plt.tight_layout()
-    plt.show()
-
 def stationary_and_autocorrelation (comprehensive_stats):
     # Extract stationarity and autocorrelation data from comprehensive_stats
     stationarity_stats = comprehensive_stats[['area_id', 'adf_statistic', 'adf_pvalue', 
@@ -694,10 +638,9 @@ def stationary_and_autocorrelation (comprehensive_stats):
     output_dir = Path("../results/eda")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "autocorrelation-stationarity.png"
-    plt.savefig(output_path, bbox_inches='tight', dpi=600, facecolor='white')
+    plt.savefig(output_path, bbox_inches='tight', dpi=150, facecolor='white')
     plt.close()
     print(f"Figure saved to: {output_path}")
-    plt.show()
     return stationarity_stats
 
 def test_cv_weights(difficulty_stats):
@@ -868,10 +811,44 @@ def forcasting_difficulty():
     plt.close()
     print(f"Figure saved to: {output_path}")
 
+def generate_eda_figures():
+    """
+    Generate exploratory data analysis figures.
+    
+    Produces:
+    - Figure X: Time series decomposition examples
+    - Figure Y: Seasonal characteristics distribution
+    - Figure Z: Stationarity and autocorrelation analysis
+    - Table X: Summary statistics
+    
+    Output directory: figures/eda/
+    """
+    print("\n" + "="*70)
+    print("STEP 0: Exploratory Data Analysis")
+    print("        (Data characteristics, seasonality, stationarity)")
+    print("="*70)
+    
+    print("\n[1/3] Running decomposition analysis...")
+    comprehensive_stats = decomposition_analysis()
+    
+    print("\n[2/3] Analyzing seasonal characteristics...")
+    seasonal_stats = seasonal_characteristics_dist(comprehensive_stats)
+    
+    print("\n[3/3] Testing stationarity and autocorrelation...")
+    stationarity_stats = stationary_and_autocorrelation(comprehensive_stats)
+    
+    print("\n Step 0 complete: EDA figures generated")
+    
+    return {
+        'comprehensive_stats': comprehensive_stats,
+        'seasonal_stats': seasonal_stats,
+        'stationarity_stats': stationarity_stats
+    }
+
 
 if __name__ == '__main__':
+    # For standalone testing
     print_options() 
-    comprehensive_stats = decomposition_analysis()
-    seasonal_stats      = seasonal_characteristics_dist(comprehensive_stats)
-    stationarity_stats  = stationary_and_autocorrelation(comprehensive_stats)
+    generate_eda_figures()
+
 

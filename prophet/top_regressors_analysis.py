@@ -269,16 +269,71 @@ def compare_with_baseline(optimized_filepath, baseline_filepath=None):
                       f"{row['mape_base']:.1f}% → {row['mape_opt']:.1f}% "
                       f"({row['improvement']:.1f}% better)")
 
-# Usage example
-if __name__ == "__main__":
-    # Analyze the optimized results
-    run = 'exp2_adaptive_reg'
-    input_path = results_dir / f'{run}.csv'
-    
-    save_dir = results_dir / f'{run}_figures'
-    save_dir.mkdir(exist_ok=True, parents=True)
 
-    results = analyze_regressor_optimization(input_path, save_dir, 
-                                             run, plot_res='low')
+def generate_regressor_selection_analysis(run_name='run_adaptive', results_dir='../results/', 
+                                          output_dir='../figures/', plot_res='low'):
+    """
+    Analyze regressor selection patterns from adaptive optimization.
+    
+    Produces:
+    - Figure 7 (left): Distribution of k values across 29 areas
+    - Figure 7 (right): Frequency of each regressor being selected
+    
+    Shows which regressors are most important and how many regressors
+    each area typically needs for optimal performance.
+    
+    Args:
+        run_name: Name of the run to analyze (e.g., 'run_adaptive')
+        results_dir: Directory containing the CSV results
+        output_dir: Directory to save figures
+        plot_res: Plot resolution ('low', 'medium', 'high')
+    
+    Input file:
+        {results_dir}/{run_name}.csv (must have 'selected_regressors' column)
+    
+    Output:
+        {output_dir}/regressor_selection_{run_name}.png
+        Summary statistics printed to console
+    
+    Returns:
+        Dictionary with analysis results
+    """
+    results_path = Path(results_dir)
+    output_path = Path(output_dir)
+    input_path = results_path / f'{run_name}.csv'
+    
+    # Check that input file exists
+    if not input_path.exists():
+        raise FileNotFoundError(
+            f"Missing required input file: {input_path}\n"
+            f"Please run Step 1 (generate_adaptive_forecasts) first."
+        )
+    
+    # Create output directory for detailed figures
+    save_dir = results_path / f'{run_name}_figures'
+    save_dir.mkdir(exist_ok=True, parents=True)
+    
+    print(f"  Input: {input_path}")
+    print(f"  Output: {results_path}/regressor_selection_{run_name}.png")
+    
+
+    
+    # Run the analysis
+    results = analyze_regressor_optimization(
+        input_path, 
+        save_dir, 
+        run_name, 
+        plot_res=plot_res
+    )
+    
+    return results
+
+
+if __name__ == "__main__":
+    # For standalone testing
+    print("Analyzing regressor selection patterns...")
+    generate_regressor_selection_analysis(run_name='run_adaptive')
+
+
 
 

@@ -1217,35 +1217,135 @@ def multicollinearity_diagnostic(comprehensive_stats, performance_df):
     
     return final_df, corr_matrix, vif_data
 
+"""
+Analysis of forecasting difficulty based on time series characteristics.
+Generates Figure 5: Relationship between difficulty score and MAPE.
+"""
+
+from pathlib import Path
+import pandas as pd
+
+RESULTS_DIR = Path('../results')
+
+
+def generate_difficulty_analysis(run_name='run_adaptive', results_dir='../results/', 
+                                 output_dir='../figures/'):
+    """
+    Analyze relationship between time series difficulty and forecasting performance.
     
-if __name__ == '__main__':
+    Produces:
+    - Figure 5: Scatter plot of Difficulty Score vs MAPE with fitted regression
+    - Classification tables: Areas categorized by difficulty
+    - Difficulty score formulation based on R²-weighted characteristics
     
-    # Analyze the optimized results
-    run = 'exp2_adaptive_reg'
-    input_path = RESULTS_DIR / f'{run}.csv'
+    Analysis steps:
+    1. Calculate time series characteristics (variance, seasonality, autocorrelation)
+    2. Find optimal weights using R²-weighted regression
+    3. Create composite difficulty score
+    4. Validate correlation with MAPE
+    5. Classify areas by difficulty thresholds
     
-    save_dir = RESULTS_DIR / f'{run}_figures'
+    Args:
+        run_name: Name of the run to analyze (e.g., 'run_adaptive')
+        results_dir: Directory containing results CSV
+        output_dir: Directory to save figures
+    
+    Input files:
+        {results_dir}/{run_name}.csv (performance metrics)
+        Comprehensive EDA statistics (from exploratory analysis)
+    
+    Output:
+        {output_dir}/difficulty_vs_mape_{run_name}.png (Figure 5)
+        {output_dir}/difficulty_classification_{run_name}.csv
+        Printed regression results and classification summary
+    
+    Returns:
+        Dictionary with regression results, optimal weights, and classification data
+    """
+    results_path = Path(results_dir)
+    #output_path = Path(output_dir)
+    input_path = results_path / f'{run_name}.csv'
+    
+    # Check that input file exists
+    if not input_path.exists():
+        raise FileNotFoundError(
+            f"Missing required input file: {input_path}\n"
+            f"Please run Step 1 (generate_adaptive_forecasts) first."
+        )
+    
+    # Create output directory for analysis results
+    save_dir = results_path / f'{run_name}_figures'
     save_dir.mkdir(exist_ok=True, parents=True)
     
-    comprehensive_stats = create_comprehensive_eda_table() 
-    performance_df = pd.read_csv (input_path)
-       
-    # Find R²-weighted optimal weights
+    print(f"  Input: {input_path}")
+    print(f"  Output: {save_dir}/difficulty_vs_mape_{run_name}.png")
+    
+
+    
+    # Load data
+    print("\n  [1/6] Creating comprehensive EDA table...")
+    comprehensive_stats = create_comprehensive_eda_table()
+    
+    print("  [2/6] Loading performance data...")
+    performance_df = pd.read_csv(input_path)
+    
+    # Find optimal weights
+    print("  [3/6] Computing R²-weighted optimal weights...")
     regression_results = optimal_weights_r2_weighted(comprehensive_stats, performance_df)
     
-    # Test the R²-weighted composite score
-    validation_results, optimal_weights = test_r2_weighted_composite_score(comprehensive_stats, performance_df, 
-                                                                           regression_results)    
-    # Create fitting curve with equation
-    fig1 = fitting_curve(comprehensive_stats, performance_df, optimal_weights, 
-                                            save_path=save_dir)
-
-
-    methods_results, perf_results = compare_threshold_methods( comprehensive_stats, performance_df, 
-                                                              optimal_weights)
-
-    classification_df = create_classification_dataframe(comprehensive_stats, performance_df, 
-                                                        optimal_weights, methods_results)
+    # Validate composite score
+    print("  [4/6] Testing R²-weighted composite score...")
+    validation_results, optimal_weights = test_r2_weighted_composite_score(
+        comprehensive_stats, performance_df, regression_results
+    )
+    
+    # Create difficulty vs MAPE plot (Figure 5)
+    print("  [5/6] Creating difficulty vs MAPE plot...")
+    fig1 = fitting_curve(
+        comprehensive_stats, 
+        performance_df, 
+        optimal_weights,
+        save_path=save_dir
+    )
+    
+    # Compare threshold methods and create classification
+    print("  [6/6] Generating classification analysis...")
+    methods_results, perf_results = compare_threshold_methods(
+        comprehensive_stats, performance_df, optimal_weights
+    )
+    
+    classification_df = create_classification_dataframe(
+        comprehensive_stats, performance_df, optimal_weights, methods_results
+    )
     
     summary_table = create_classification_summary_table(classification_df)
+    
+    # Export results
     export_df = export_classification_results(classification_df)
+    
+    # Save classification results
+    classification_csv = results_path / f'difficulty_classification_{run_name}.csv'
+    classification_df.to_csv(classification_csv, index=False)
+    print(f"\n  Classification results saved to: {classification_csv}")
+    
+    return {
+        'regression_results': regression_results,
+        'validation_results': validation_results,
+        'optimal_weights': optimal_weights,
+        'classification_df': classification_df,
+        'summary_table': summary_table,
+        'methods_results': methods_results
+    }
+
+
+if __name__ == '__main__':
+
+    print("Analyzing forecasting difficulty...")
+    results = generate_difficulty_analysis(run_name='run_adaptive')
+    
+    print("\n" + "="*70)
+    print(f"Correlation: r = {results['validation_results'].get('correlation', 'N/A')}")
+    print(f"R² = {results['validation_results'].get('r_squared', 'N/A')}")
+    print("\nDifficulty Score Formula:")
+    print(results['optimal_weights'])  
+

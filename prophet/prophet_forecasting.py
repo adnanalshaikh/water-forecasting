@@ -917,11 +917,9 @@ def analyze_area(filepath, config):
     
     return final_results
 
-def generate_multiple_areas():
+def generate_multiple_areas(config):
 
-    filepath = '../data/combined_water_data.csv'
-    from config import config
-    
+    filepath = '../data/combined_water_data.csv'    
     figures_dir = results_dir / f"{config.get('run_dir', 'run_xxx')}_figures"
     figures_dir.mkdir(parents=True, exist_ok=True)
     
@@ -940,11 +938,25 @@ def generate_multiple_areas():
             print (f'ERROR: bad time series or too many missing values: area id: {id}\n')
             continue 
         time.sleep(0.05)
-
-if __name__ == '__main__':
+        
+def run_forecasting(config):
+    """Run Prophet forecasting with given config"""
     configure_environment()
     start_time = time.time()
-    generate_multiple_areas()
-    end_time = time.time()
-    exec_time = end_time - start_time
-    print(f"exec_time: {exec_time}")
+    generate_multiple_areas(config)
+    exec_time = time.time() - start_time
+    print(f"exec_time: {exec_time:.2f}s")
+    return exec_time
+        
+if __name__ == '__main__':
+    from config import config_baseline
+    config = config_baseline.copy()
+    config.update({
+        'area_id': (1, 29),
+        'run_dir': 'run_1',
+        'add_regressors': True,
+        'optimize_regressor_selection': True,
+        'min_regressors': 1,
+        'max_regressors': 7,
+    })
+    run_forecasting(config)

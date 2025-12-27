@@ -1,6 +1,6 @@
 import pandas as pd
 
-x = pd.read_csv('../results/run1.csv')
+x = pd.read_csv('../results/run_adaptive.csv')
 t = [x.iloc[i]['exec_time'] for i in range(29)]
 
 # Example time series (Pandas Series)
